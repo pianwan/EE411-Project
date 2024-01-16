@@ -1,0 +1,13 @@
+device = cpu
+model = resnet18
+dataset = cifar-10
+seed = 0
+optimizer = SGD
+epoch = 4000
+batch_size = 256
+lr = 0.01
+momentum = 0.9
+weight_decay = 0
+
+load_weights = false
+weight_iter = 1000
