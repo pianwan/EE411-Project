@@ -1,11 +1,12 @@
 device = cpu
+save_path = ./checkpoints/sample
 model = resnet18
 dataset = cifar-10
 num_classes = 10
 seed = 0
 optimizer = SGD
 epoch = 4000
-batch_size = 256
+batch_size = 512
 lr = 0.01
 momentum = 0.9
 weight_decay = 0

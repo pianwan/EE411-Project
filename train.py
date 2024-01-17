@@ -10,6 +10,7 @@ from tqdm import tqdm
 from config import config_parser
 from dataset.datasets import DatasetConfig
 from model.model import ModelConfig
+from utils import save_model, load_model
 
 
 def train(args, device):
@@ -28,20 +29,31 @@ def train(args, device):
     # Cosine Annealing learning rate
     lr_scheduler = CosineAnnealingLR(optimizer, args.epoch)
 
+    # load weights
+    start = 0
+    if args.load_weights:
+        start = load_model(model, args.save_path, args)
+
     # train
     print("> Start training")
-    for i, data in enumerate(tqdm(train_loader)):
-        inputs, labels = data
-        inputs = inputs.to(device)
-        labels = torch.nn.functional.one_hot(labels, num_classes=args.num_classes).to(torch.float32).to(device)
-        optimizer.zero_grad()
-        preds = network(inputs)
-        loss = criterion(preds, labels)
-        loss.backward()
-        optimizer.step()
-        lr_scheduler.step()
+    for epoch in tqdm(range(start, args.epoch)):
+        loss_eopch = 0
+        for data in tqdm(train_loader):
+            inputs, labels = data
+            inputs = inputs.to(device)
+            labels = torch.nn.functional.one_hot(labels, num_classes=args.num_classes).to(torch.float32).to(device)
+            optimizer.zero_grad()
+            preds = network(inputs)
+            loss = criterion(preds, labels)
+            loss.backward()
+            optimizer.step()
+            lr_scheduler.step()
 
-        tqdm.write(f"Epoch: [{i}/{len(train_loader)}], Loss{loss.item()}")
+            loss_eopch += loss.item() / inputs.shape[0]
+
+    tqdm.write(f"Epoch: [{epoch}/{len(train_loader)}], Loss{loss_eopch}")
+    if epoch == args.epoch - 1:
+        save_model(model, args.save_path, epoch)
 
 
 if __name__ == '__main__':

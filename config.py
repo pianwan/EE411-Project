@@ -34,4 +34,6 @@ def config_parser():
                         help='weight ckpt loading')
     parser.add_argument("--weight_iter", type=int, default=1000,
                         help='iter of weight to load')
+    parser.add_argument("--save_path", type=str, default="./checkpoints",
+                        help='save path for checkpoint')
     return parser
