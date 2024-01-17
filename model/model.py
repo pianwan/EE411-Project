@@ -3,6 +3,8 @@ import abc
 import torch
 import torchvision.models
 
+from model.optim import BetaLASSO
+
 
 class ModelConfig:
 
@@ -42,6 +44,9 @@ class Model:
                                               weight_decay=self.args.weight_decay)
         elif self.args.optimizer == "RMSProp":
             self.optimizer = torch.optim.RMSprop(list(self.network.parameters()), lr=self.args.lr)
+        elif self.args.optimizer == "BetaLasso":
+            self.optimizer = BetaLASSO(list(self.network.parameters()), lr=self.args.lr, beta=self.args.beta,
+                                       lambda_=self.args.beta_lambda)
         else:
             raise AttributeError("select a correct optimizer")
 

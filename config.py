@@ -29,6 +29,10 @@ def config_parser():
                         help='momentum')
     parser.add_argument("--weight_decay", type=float, default=0,
                         help='weight_decay')
+    parser.add_argument("--beta", type=int, default=0,
+                        help='beta for beta_lasso')
+    parser.add_argument("--beta_lambda", type=float, default=1e-5,
+                        help='weight_decay')
     # training params
     parser.add_argument("--load_weights", action='store_true',
                         help='weight ckpt loading')
