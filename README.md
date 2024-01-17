@@ -13,12 +13,13 @@ EE411 Reproducibility Challenge: Towards learning convolutions from scratch
 
 ### Requirements
 
+Python 3.10
 ```shell
 pip install -r requirements.txt
 ```
 
 ### Datasets
-The datasets can be found from `torchvision`
+The datasets can be downloaded from `torchvision`.
 
 ### Run
 
