@@ -5,7 +5,7 @@ import numpy as np
 import torch
 from torch.nn import BCEWithLogitsLoss
 from torch.optim.lr_scheduler import CosineAnnealingLR
-from tqdm import tqdm
+from tqdm import tqdm, trange
 
 from config import config_parser
 from dataset.datasets import DatasetConfig
@@ -29,16 +29,18 @@ def train(args, device):
     # Cosine Annealing learning rate
     lr_scheduler = CosineAnnealingLR(optimizer, args.epoch)
 
+    losses = []
+
     # load weights
     start = 0
     if args.load_weights:
-        start = load_model(model, args.save_path, args)
+        start, losses = load_model(model, args.save_path, args)
 
     # train
     print("> Start training")
-    for epoch in tqdm(range(start, args.epoch)):
+    for epoch in trange(start, args.epoch):
         loss_eopch = 0
-        for data in tqdm(train_loader):
+        for data in train_loader:
             inputs, labels = data
             inputs = inputs.to(device)
             labels = torch.nn.functional.one_hot(labels, num_classes=args.num_classes).to(torch.float32).to(device)
@@ -51,9 +53,10 @@ def train(args, device):
 
             loss_eopch += loss.item() / inputs.shape[0]
 
-    tqdm.write(f"Epoch: [{epoch}/{len(train_loader)}], Loss{loss_eopch}")
-    if epoch == args.epoch - 1:
-        save_model(model, args.save_path, epoch)
+        tqdm.write(f"Epoch: [{epoch}/{args.epoch}], Loss: {loss_eopch}")
+        losses.append(loss_eopch)
+        if epoch + 1 == args.epoch or epoch % args.save_iter == 1:
+            save_model(model, args.save_path, epoch, losses)
 
 
 if __name__ == '__main__':
