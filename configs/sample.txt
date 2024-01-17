@@ -1,6 +1,7 @@
 device = cpu
 model = resnet18
 dataset = cifar-10
+num_classes = 10
 seed = 0
 optimizer = SGD
 epoch = 4000

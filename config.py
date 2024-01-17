@@ -13,10 +13,12 @@ def config_parser():
                         help='model to use')
     parser.add_argument("--dataset", type=str, default="resnet18",
                         help='dataset to use')
+    parser.add_argument("--num_classes", type=int, default=10,
+                        help='number of classes')
     parser.add_argument("--optimizer", type=str, default="SGD",
                         help='dataset to use')
     parser.add_argument("--seed", type=int, default=0,
-                        help='cuda id to use')
+                        help='the seed for reproducibility')
     parser.add_argument("--batch_size", type=int, default=512,
                         help='batch size')
     parser.add_argument("--epoch", type=int, default=4000,

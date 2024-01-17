@@ -33,7 +33,7 @@ def train(args, device):
     for i, data in enumerate(tqdm(train_loader)):
         inputs, labels = data
         inputs = inputs.to(device)
-        labels = torch.nn.functional.one_hot(labels, num_classes=10).to(torch.float32).to(device)
+        labels = torch.nn.functional.one_hot(labels, num_classes=args.num_classes).to(torch.float32).to(device)
         optimizer.zero_grad()
         preds = network(inputs)
         loss = criterion(preds, labels)
