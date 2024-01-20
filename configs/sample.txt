@@ -1,6 +1,6 @@
-device = mps
+device = cpu
 save_path = ./checkpoints/sample
-model = resnet18
+model = mlp
 dataset = cifar-10
 num_classes = 10
 seed = 0
