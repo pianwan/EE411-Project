@@ -1,13 +1,13 @@
 device = mps
 save_path = ./checkpoints/sample
-model = resnet18
+model = sconv
 dataset = cifar-10
 num_classes = 10
 seed = 0
 epoch = 400
 batch_size = 512
 
-optimizer = SGD
+optimizer = BetaLasso
 lr = 0.01
 momentum = 0.9
 weight_decay = 0
@@ -18,4 +18,4 @@ load_weights = false
 weight_iter = 100
 save_iter = 100
 
-metrics_iter = 1
+metrics_iter = 3

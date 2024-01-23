@@ -27,7 +27,7 @@ class FullConnectLayer(nn.Module):
         super().__init__()
         self.fc = nn.Sequential(
             nn.Linear(in_features, out_features),
-            nn.BatchNorm2d(out_features),
+            nn.BatchNorm1d(out_features),
             nn.ReLU(),
         )
 
