@@ -1,5 +1,5 @@
 import torch
-from torch.optim.optimizer import Optimizer, _use_grad_for_differentiable
+from torch.optim.optimizer import Optimizer
 
 
 class BetaLASSO(Optimizer):
@@ -10,7 +10,6 @@ class BetaLASSO(Optimizer):
     def __setstate__(self, state):
         super(BetaLASSO, self).__setstate__(state)
 
-    @_use_grad_for_differentiable
     def step(self, closure=None):
         loss = None
         if closure is not None:
@@ -24,7 +23,10 @@ class BetaLASSO(Optimizer):
                     continue
                 d_p = p.grad.data
 
-                p.data.add_(d_p + lambda_ * torch.sign(p.data), alpha=-lr)
+                # Basic SGD
+                p.data.add_(d_p, alpha=-lr)
+                # L1 regularization
+                p.data.add_(lambda_ * torch.sign(p.data), alpha=-lr)
                 # Beta-LASSO thresholding
                 p.data[
                     (p.data > -beta * lambda_) & (p.data < beta * lambda_)
