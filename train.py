@@ -62,11 +62,6 @@ def train(args):
         tqdm.write(f"Epoch: [{epoch}/{args.epoch}], Loss: {loss_epoch}")
         train_loss.append(loss_epoch)
 
-        # Save model
-        if epoch % args.save_iter == 0 or epoch == args.epoch:
-            save_model(model, args.save_path, epoch, train_acc, train_loss, test_acc, test_loss)
-            print(f"Saved checkpoints for epoch {epoch} at {args.save_path}")
-
         # Compute test metrics
         if epoch % args.metrics_iter == 0 or epoch == args.epoch:
             print(f"Computing metrics for epoch {epoch}")
@@ -75,6 +70,11 @@ def train(args):
             test_loss.append(te_loss)
             test_acc.append(te_acc)
             train_acc.append(tr_acc)
+
+        # Save model
+        if epoch % args.save_iter == 0 or epoch == args.epoch:
+            save_model(model, args.save_path, epoch, train_acc, train_loss, test_acc, test_loss)
+            print(f"Saved checkpoints for epoch {epoch} at {args.save_path}")
 
 
 if __name__ == '__main__':
