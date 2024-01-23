@@ -2,12 +2,13 @@ import abc
 
 import torch
 import torchvision.models
+from torch import nn
 
+from model.components import ConvLayer, LocalConnectLayer, FullConnectLayer
 from model.optim import BetaLASSO
 
 
 class ModelConfig:
-
     def __init__(self, args):
         if args.model == 'resnet18':
             self.model = ResNet18(args)
@@ -16,9 +17,9 @@ class ModelConfig:
         elif args.model == 'mlps':
             self.model = MLPS(args)
         elif args.model == 'sconv':
-            self.model = SConv(args)      
+            self.model = SConv(args)
         elif args.model == 'slocal':
-            self.model = SLocal(args)      
+            self.model = SLocal(args)
 
         self.model.build_network()
         self.model.setup_optimizer()
@@ -61,8 +62,8 @@ class ResNet18(Model):
     def build_network(self):
         self.network = torchvision.models.resnet18()
         self.network.fc = torch.nn.Linear(self.network.fc.in_features, self.args.num_classes)
-        
-        
+
+
 class SConv(Model):
     def build_network(self):
         self.network = nn.Sequential(
@@ -81,7 +82,7 @@ class SLocal(Model):
 class MLP3(Model):
     def build_network(self):
         self.network = nn.Sequential(
-            FullConnectLayer(in_features=28*28, out_features=512),
+            FullConnectLayer(in_features=28 * 28, out_features=512),
             FullConnectLayer(in_features=512, out_features=256),
             nn.Linear(256, self.args.num_classes)
         )
@@ -90,11 +91,8 @@ class MLP3(Model):
 class MLPS(Model):
     def build_network(self):
         self.network = nn.Sequential(
-            FullConnectLayer(in_features=28*28, out_features=512),
+            FullConnectLayer(in_features=28 * 28, out_features=512),
             FullConnectLayer(in_features=512, out_features=256),
             FullConnectLayer(in_features=256, out_features=128),
             nn.Linear(128, self.args.num_classes)
         )
-  
-               
-

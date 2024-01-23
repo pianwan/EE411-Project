@@ -9,11 +9,12 @@ from tqdm import tqdm, trange
 
 from config import config_parser
 from dataset.datasets import DatasetConfig
+from metrics import compute_metrics
 from model.model import ModelConfig
 from utils import save_model, load_model
 
 
-def train(args, device):
+def train(args):
     # load data
     print("> Loading data")
     dataset = DatasetConfig(args)
@@ -23,27 +24,32 @@ def train(args, device):
     print("> Loading model")
     model = ModelConfig(args)
     optimizer = model.get_optimizer()
-    network = model.get_network().to(device)
+    network = model.get_network().to(args.device)
 
     criterion = BCEWithLogitsLoss()
     # Cosine Annealing learning rate
     lr_scheduler = CosineAnnealingLR(optimizer, args.epoch)
 
-    losses = []
+    train_acc, train_loss = [], []
+    test_acc, test_loss = [], []
 
     # load weights
     start = 0
     if args.load_weights:
-        start, losses = load_model(model, args.save_path, args)
+        start, train_acc, train_loss, test_acc, test_loss = load_model(model, args.save_path, args)
 
     # train
     print("> Start training")
-    for epoch in trange(start, args.epoch):
-        loss_eopch = 0
+    for epoch in trange(start + 1, args.epoch + 1):
+        # train mode
+        network.train()
+        loss_epoch = 0
+
+        # train for all the data in one epoch
         for data in train_loader:
             inputs, labels = data
-            inputs = inputs.to(device)
-            labels = torch.nn.functional.one_hot(labels, num_classes=args.num_classes).to(torch.float32).to(device)
+            inputs = inputs.to(args.device)
+            labels = torch.nn.functional.one_hot(labels, num_classes=args.num_classes).to(torch.float32).to(args.device)
             optimizer.zero_grad()
             preds = network(inputs)
             loss = criterion(preds, labels)
@@ -51,12 +57,24 @@ def train(args, device):
             optimizer.step()
             lr_scheduler.step()
 
-            loss_eopch += loss.item() / inputs.shape[0]
+            loss_epoch += loss.item() / inputs.shape[0]
 
-        tqdm.write(f"Epoch: [{epoch}/{args.epoch}], Loss: {loss_eopch}")
-        losses.append(loss_eopch)
-        if epoch + 1 == args.epoch or epoch % args.save_iter == 1:
-            save_model(model, args.save_path, epoch, losses)
+        tqdm.write(f"Epoch: [{epoch}/{args.epoch}], Loss: {loss_epoch}")
+        train_loss.append(loss_epoch)
+
+        # Save model
+        if epoch % args.save_iter == 0 or epoch == args.epoch:
+            save_model(model, args.save_path, epoch, train_acc, train_loss, test_acc, test_loss)
+            print(f"Saved checkpoints for epoch {epoch} at {args.save_path}")
+
+        # Compute test metrics
+        if epoch % args.metrics_iter == 0 or epoch == args.epoch:
+            print(f"Computing metrics for epoch {epoch}")
+            te_acc, te_loss = compute_metrics(network, criterion, test_loader, args)
+            tr_acc, _ = compute_metrics(network, criterion, train_loader, args)
+            test_loss.append(te_loss)
+            test_acc.append(te_acc)
+            train_acc.append(tr_acc)
 
 
 if __name__ == '__main__':
@@ -82,4 +100,4 @@ if __name__ == '__main__':
 
     # train
     print("Start training...")
-    train(args, args.device)
+    train(args)

@@ -1,6 +1,6 @@
-device = cpu
+device = mps
 save_path = ./checkpoints/sample
-model = mlp
+model = resnet18
 dataset = cifar-10
 num_classes = 10
 seed = 0
@@ -17,3 +17,5 @@ beta_lambda = 1e-5
 load_weights = false
 weight_iter = 100
 save_iter = 100
+
+metrics_iter = 1

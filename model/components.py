@@ -1,6 +1,5 @@
-from torch import nn
 import torch
-import torchvision
+from torch import nn
 
 
 class ConvLayer(nn.Module):
