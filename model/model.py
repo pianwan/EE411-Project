@@ -12,7 +12,13 @@ class ModelConfig:
         if args.model == 'resnet18':
             self.model = ResNet18(args)
         elif args.model == 'mlp':
-            self.model = None
+            self.model = MLP3(args)
+        elif args.model == 'mlps':
+            self.model = MLPS(args)
+        elif args.model == 'sconv':
+            self.model = SConv(args)      
+        elif args.model == 'slocal':
+            self.model = SLocal(args)      
 
         self.model.build_network()
         self.model.setup_optimizer()
@@ -55,3 +61,40 @@ class ResNet18(Model):
     def build_network(self):
         self.network = torchvision.models.resnet18()
         self.network.fc = torch.nn.Linear(self.network.fc.in_features, self.args.num_classes)
+        
+        
+class SConv(Model):
+    def build_network(self):
+        self.network = nn.Sequential(
+            ConvLayer(in_channels=1, out_channels=16, kernel_size=3, stride=1, padding=1),
+            ConvLayer(in_channels=16, out_channels=32, kernel_size=3, stride=1, padding=1),
+            ConvLayer(in_channels=32, out_channels=64, kernel_size=3, stride=1, padding=1),
+            nn.Linear(64 * 28 * 28, self.args.num_classes)
+        )
+
+
+class SLocal(Model):
+    def build_network(self):
+        self.network = LocalConnectLayer(in_channels=1, out_channels=16, kernel_size=3, stride=1, padding=1)
+
+
+class MLP3(Model):
+    def build_network(self):
+        self.network = nn.Sequential(
+            FullConnectLayer(in_features=28*28, out_features=512),
+            FullConnectLayer(in_features=512, out_features=256),
+            nn.Linear(256, self.args.num_classes)
+        )
+
+
+class MLPS(Model):
+    def build_network(self):
+        self.network = nn.Sequential(
+            FullConnectLayer(in_features=28*28, out_features=512),
+            FullConnectLayer(in_features=512, out_features=256),
+            FullConnectLayer(in_features=256, out_features=128),
+            nn.Linear(128, self.args.num_classes)
+        )
+  
+               
+
