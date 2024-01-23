@@ -64,7 +64,7 @@ class Model:
 
 class ResNet18(Model):
     def build_network(self):
-        self.network = torchvision.mok02.dels.resnet18()
+        self.network = torchvision.models.resnet18()
         self.network.fc = torch.nn.Linear(self.network.fc.in_features, self.args.num_classes)
 
 
