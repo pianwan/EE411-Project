@@ -1,13 +1,13 @@
 device = cpu
-save_path = ./checkpoints/sample
-model = mlp
+save_path = ./checkpoints/mlpsfc_adam
+model = mlpsfc
 dataset = cifar-10
 num_classes = 10
 seed = 0
 epoch = 400
 batch_size = 512
 
-optimizer = SGD
+optimizer = Adam
 lr = 0.01
 momentum = 0.9
 weight_decay = 0

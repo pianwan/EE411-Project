@@ -4,21 +4,27 @@ import torch
 import torchvision.models
 
 from model.optim import BetaLASSO
-
+from model.components import *
 
 class ModelConfig:
 
     def __init__(self, args):
         if args.model == 'resnet18':
             self.model = ResNet18(args)
-        elif args.model == 'mlp':
-            self.model = MLP3(args)
-        elif args.model == 'mlps':
-            self.model = MLPS(args)
+        elif args.model == 'mlp3fc':
+            self.model = MLP3FC(args)
+        elif args.model == 'mlpsfc':
+            self.model = MLPSFC(args)
+        elif args.model == 'mlpdfc':
+            self.model = MLPDFC(args)
         elif args.model == 'sconv':
             self.model = SConv(args)      
         elif args.model == 'slocal':
-            self.model = SLocal(args)      
+            self.model = SLocal(args)  
+        elif args.model == 'dconv':
+            self.model = DConv(args)      
+        elif args.model == 'dlocal':
+            self.model = DLocal(args)    
 
         self.model.build_network()
         self.model.setup_optimizer()
@@ -59,42 +65,89 @@ class Model:
 
 class ResNet18(Model):
     def build_network(self):
-        self.network = torchvision.models.resnet18()
+        self.network = torchvision.mok02.dels.resnet18()
         self.network.fc = torch.nn.Linear(self.network.fc.in_features, self.args.num_classes)
         
-        
-class SConv(Model):
+
+class MLP3FC(Model):
     def build_network(self):
         self.network = nn.Sequential(
-            ConvLayer(in_channels=1, out_channels=16, kernel_size=3, stride=1, padding=1),
-            ConvLayer(in_channels=16, out_channels=32, kernel_size=3, stride=1, padding=1),
-            ConvLayer(in_channels=32, out_channels=64, kernel_size=3, stride=1, padding=1),
-            nn.Linear(64 * 28 * 28, self.args.num_classes)
+            FullConnectLayer(3072, 256),
+            FullConnectLayer(256, 256),
+            nn.Linear(256, self.args.num_classes)
+        )
+        
+
+class MLPSFC(Model):
+    def build_network(self):
+        self.network = nn.Sequential(
+            FullConnectLayer(3072, 768),
+            FullConnectLayer(768, 24),
+            nn.Linear(24, self.args.num_classes)
+        )
+          
+                 
+class SConv(Model):
+    def build_network(self):
+        self.network = torch.nn.Sequential(
+            ConvLayer(in_channels=3, out_channels=1, kernel_size=9, stride=2, padding=0),
+            FullConnectLayer(in_features=144, out_features=24),
+            torch.nn.Linear(24 , self.args.num_classes)
         )
 
 
 class SLocal(Model):
     def build_network(self):
-        self.network = LocalConnectLayer(in_channels=1, out_channels=16, kernel_size=3, stride=1, padding=1)
+        self.network = torch.nn.Sequential(
+            LocalConnectLayer(in_channels=3, out_channels=1, kernel_size=9, stride=2, padding=0),
+            FullConnectLayer(in_features=144, out_features=24),
+            torch.nn.Linear(24 , self.args.num_classes)
+        )
+        
 
-
-class MLP3(Model):
+class DConv(Model):
     def build_network(self):
-        self.network = nn.Sequential(
-            FullConnectLayer(in_features=28*28, out_features=512),
-            FullConnectLayer(in_features=512, out_features=256),
-            nn.Linear(256, self.args.num_classes)
+        self.network = torch.nn.Sequential(
+            ConvLayer(in_channels=3, out_channels=1, kernel_size=3, stride=1, padding=0),
+            ConvLayer(in_channels=1, out_channels=2, kernel_size=3, stride=2, padding=0),
+            ConvLayer(in_channels=2, out_channels=2, kernel_size=3, stride=1, padding=0),
+            ConvLayer(in_channels=2, out_channels=4, kernel_size=3, stride=2, padding=0),
+            ConvLayer(in_channels=4, out_channels=4, kernel_size=3, stride=1, padding=0),
+            ConvLayer(in_channels=4, out_channels=8, kernel_size=3, stride=2, padding=0),
+            ConvLayer(in_channels=8, out_channels=8, kernel_size=3, stride=1, padding=0),
+            ConvLayer(in_channels=8, out_channels=16, kernel_size=3, stride=2, padding=0),
+            FullConnectLayer(in_features=144, out_features=64),
+            torch.nn.Linear(64 , self.args.num_classes)
         )
 
 
-class MLPS(Model):
+class DLocal(Model):
+    def build_network(self):
+        self.network = torch.nn.Sequential(
+            LocalConnectLayer(in_channels=3, out_channels=1, kernel_size=3, stride=1, padding=0),
+            LocalConnectLayer(in_channels=1, out_channels=2, kernel_size=3, stride=2, padding=0),
+            LocalConnectLayer(in_channels=2, out_channels=2, kernel_size=3, stride=1, padding=0),
+            LocalConnectLayer(in_channels=2, out_channels=4, kernel_size=3, stride=2, padding=0),
+            LocalConnectLayer(in_channels=4, out_channels=4, kernel_size=3, stride=1, padding=0),
+            LocalConnectLayer(in_channels=4, out_channels=8, kernel_size=3, stride=2, padding=0),
+            LocalConnectLayer(in_channels=8, out_channels=8, kernel_size=3, stride=1, padding=0),
+            LocalConnectLayer(in_channels=8, out_channels=16, kernel_size=3, stride=2, padding=0),
+            FullConnectLayer(in_features=144, out_features=24),
+            torch.nn.Linear(24 , self.args.num_classes)
+        )
+        
+        
+class MLPDFC(Model):
     def build_network(self):
         self.network = nn.Sequential(
-            FullConnectLayer(in_features=28*28, out_features=512),
-            FullConnectLayer(in_features=512, out_features=256),
-            FullConnectLayer(in_features=256, out_features=128),
-            nn.Linear(128, self.args.num_classes)
+            FullConnectLayer(3072, 1024),
+            FullConnectLayer(1024, 512),
+            FullConnectLayer(512, 512),
+            FullConnectLayer(512, 256),
+            FullConnectLayer(256, 256),
+            FullConnectLayer(256, 128),
+            FullConnectLayer(128, 128),
+            FullConnectLayer(128, 64),
+            nn.Linear(64, self.args.num_classes)
         )
-  
-               
 
