@@ -33,6 +33,8 @@ def config_parser():
                         help='beta for beta_lasso')
     parser.add_argument("--beta_lambda", type=float, default=1e-5,
                         help='weight_decay')
+    parser.add_argument("--alpha", type=int, default=1,
+                        help='alpha')
     # training params
     parser.add_argument("--load_weights", action='store_true',
                         help='weight ckpt loading')

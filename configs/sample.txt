@@ -19,3 +19,4 @@ weight_iter = 100
 save_iter = 100
 
 metrics_iter = 3
+alpha = 1
