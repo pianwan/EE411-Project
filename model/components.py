@@ -65,7 +65,7 @@ class LocalConnect(nn.Module):
 
 
 class LocalConnectLayer(nn.Module):
-    def __init__(self, in_channels, out_channels, kernel_size, stride, padding):
+    def __init__(self, in_channels, out_channels, kernel_size, stride, padding, bias):
         super().__init__()
         self.in_channels = in_channels
         self.out_channels = out_channels
