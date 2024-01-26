@@ -25,3 +25,7 @@ def load_model(model, path, args):
     model.get_optimizer().load_state_dict(ckpt["optimizer"])
     print("Loaded checkpoint at", path)
     return ckpt["step"], ckpt["train_acc"], ckpt["train_loss"], ckpt["test_acc"], ckpt["test_loss"]
+
+
+def count_params(model):
+    return sum([param.nelement() for param in model.parameters()])

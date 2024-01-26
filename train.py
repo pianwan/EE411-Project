@@ -11,7 +11,7 @@ from config import config_parser
 from dataset.datasets import DatasetConfig
 from metrics import compute_metrics
 from model.model import ModelConfig
-from utils import save_model, load_model
+from utils import save_model, load_model, count_params
 
 
 def train(args):
@@ -25,6 +25,10 @@ def train(args):
     model = ModelConfig(args)
     optimizer = model.get_optimizer()
     network = model.get_network().to(args.device)
+
+    # model params
+    num_params = count_params(model)
+    print(f"> Total number of parameters {num_params}")
 
     criterion = BCEWithLogitsLoss()
     # Cosine Annealing learning rate
