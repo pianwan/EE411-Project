@@ -1,6 +1,6 @@
 # EE411-Project
 
-EE411 Reproducibility Challenge: Towards learning convolutions from scratch
+[EPFL EE411](https://edu.epfl.ch/coursebook/en/fundamentals-of-inference-and-learning-EE-411) Reproducibility Challenge: Towards learning convolutions from scratch
 
 ## Team members
 
@@ -17,18 +17,21 @@ EE411 Reproducibility Challenge: Towards learning convolutions from scratch
 Python 3.10
 
 ```shell
+git clone --recursive git@github.com:pianwan/EE411-Project.git
+cd EE411-Project
 pip install -r requirements.txt
 ```
 
 ### Datasets
 
-The datasets can be downloaded from `torchvision`.
+The datasets can be downloaded directly from `torchvision` datasets. We test our models on `CIFAR-10`, `CIFAR-100`, and `SVHN` datasets.
 
 ### Run
 
 ```shell
 python train.py --config ./configs/sample.txt
 ```
+You can specify the config by using the parameter like `--alpha 100 --epoch 4000`.
 
 ## Result
 
@@ -44,4 +47,24 @@ TODO
 
 ## Acknowledgements
 
-TODO
+We thank Neyshabur Behnam for his work _Towards learning convolutions from scratch_. For reference, you can cite his paper and this repository by:
+
+```tex
+@article{neyshabur2020towards,
+  title={Towards learning convolutions from scratch},
+  author={Neyshabur, Behnam},
+  journal={Advances in Neural Information Processing Systems},
+  volume={33},
+  pages={8078--8088},
+  year={2020}
+}
+```
+
+```tex
+@misc{wan2024unoffical,
+    title={Unofficial implements of Towards learning convolutions from scratch},
+    author= {Wan, Pian and Lu, Yuheng and Li, Xinwei and Jiaxing, Dong and Xinyi, Han},
+    year={2024},
+    note={https://github.com/pianwan/EE411-Project}
+}
+```
