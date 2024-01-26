@@ -1,6 +1,6 @@
 device = cuda
 save_path = ./checkpoints/sample
-model = resnet18
+model = sconv
 dataset = cifar-10
 num_classes = 10
 seed = 0
@@ -19,4 +19,4 @@ weight_iter = 100
 save_iter = 100
 
 metrics_iter = 3
-alpha = 1
+alpha = 128
