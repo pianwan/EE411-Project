@@ -44,6 +44,8 @@ def config_parser():
                         help='iter of weight to save')
     parser.add_argument("--metrics_iter", type=int, default=100,
                         help='iter to compute metrics')
+    parser.add_argument("--alpha", type=int, default=1,
+                        help='base number of channels')
     parser.add_argument("--save_path", type=str, default="./checkpoints",
                         help='save path for checkpoint')
     return parser

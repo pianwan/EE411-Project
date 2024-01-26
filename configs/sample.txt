@@ -1,14 +1,14 @@
-device = mps
+device = cuda
 save_path = ./checkpoints/sample
-model = sconv
+model = resnet18
 dataset = cifar-10
 num_classes = 10
 seed = 0
 epoch = 400
-batch_size = 512
+batch_size = 64
 
-optimizer = BetaLasso
-lr = 0.01
+optimizer = SGD
+lr = 0.1
 momentum = 0.9
 weight_decay = 0
 beta = 50
