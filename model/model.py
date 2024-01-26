@@ -89,34 +89,42 @@ class MLPSFC(Model):
 class SConv(Model):
     def build_network(self):
         self.network = torch.nn.Sequential(
-            ConvLayer(in_channels=3, out_channels=1*self.args.alpha, kernel_size=9, stride=2, padding=0),
-            FullConnectLayer(in_features=144*self.args.alpha, out_features=24*self.args.alpha),
-            torch.nn.Linear(24*self.args.alpha, self.args.num_classes)
+            ConvLayer(in_channels=3, out_channels=1 * self.args.alpha, kernel_size=9, stride=2, padding=0),
+            FullConnectLayer(in_features=144 * self.args.alpha, out_features=24 * self.args.alpha),
+            torch.nn.Linear(24 * self.args.alpha, self.args.num_classes)
         )
 
 
 class SLocal(Model):
     def build_network(self):
         self.network = torch.nn.Sequential(
-            LocalConnectLayer(in_channels=3, out_channels=1*self.args.alpha, kernel_size=9, stride=2, padding=0, bias=False),
-            FullConnectLayer(in_features=144*self.args.alpha, out_features=24*self.args.alpha),
-            torch.nn.Linear(24*self.args.alpha, self.args.num_classes)
+            LocalConnectLayer(in_channels=3, out_channels=1 * self.args.alpha, kernel_size=9, stride=2, padding=0,
+                              bias=False),
+            FullConnectLayer(in_features=144 * self.args.alpha, out_features=24 * self.args.alpha),
+            torch.nn.Linear(24 * self.args.alpha, self.args.num_classes)
         )
 
 
 class DConv(Model):
     def build_network(self):
         self.network = torch.nn.Sequential(
-            ConvLayer(in_channels=3, out_channels=1*self.args.alpha, kernel_size=3, stride=1, padding=0),
-            ConvLayer(in_channels=1*self.args.alpha, out_channels=2*self.args.alpha, kernel_size=3, stride=2, padding=0),
-            ConvLayer(in_channels=2*self.args.alpha, out_channels=2*self.args.alpha, kernel_size=3, stride=1, padding=0),
-            ConvLayer(in_channels=2*self.args.alpha, out_channels=4*self.args.alpha, kernel_size=3, stride=2, padding=0),
-            ConvLayer(in_channels=4*self.args.alpha, out_channels=4*self.args.alpha, kernel_size=3, stride=1, padding=0),
-            ConvLayer(in_channels=4*self.args.alpha, out_channels=8*self.args.alpha, kernel_size=3, stride=2, padding=0),
-            ConvLayer(in_channels=8*self.args.alpha, out_channels=8*self.args.alpha, kernel_size=3, stride=1, padding=0),
-            ConvLayer(in_channels=8*self.args.alpha, out_channels=16*self.args.alpha, kernel_size=3, stride=2, padding=0),
-            FullConnectLayer(in_features=144*self.args.alpha, out_features=64*self.args.alpha),
-            torch.nn.Linear(in_features=64*self.args.alpha, out_features=self.args.num_classes)
+            ConvLayer(in_channels=3, out_channels=1 * self.args.alpha, kernel_size=3, stride=1, padding=0),
+            ConvLayer(in_channels=1 * self.args.alpha, out_channels=2 * self.args.alpha, kernel_size=3, stride=2,
+                      padding=0),
+            ConvLayer(in_channels=2 * self.args.alpha, out_channels=2 * self.args.alpha, kernel_size=3, stride=1,
+                      padding=0),
+            ConvLayer(in_channels=2 * self.args.alpha, out_channels=4 * self.args.alpha, kernel_size=3, stride=2,
+                      padding=0),
+            ConvLayer(in_channels=4 * self.args.alpha, out_channels=4 * self.args.alpha, kernel_size=3, stride=1,
+                      padding=0),
+            ConvLayer(in_channels=4 * self.args.alpha, out_channels=8 * self.args.alpha, kernel_size=3, stride=2,
+                      padding=0),
+            ConvLayer(in_channels=8 * self.args.alpha, out_channels=8 * self.args.alpha, kernel_size=3, stride=1,
+                      padding=0),
+            ConvLayer(in_channels=8 * self.args.alpha, out_channels=16 * self.args.alpha, kernel_size=3, stride=2,
+                      padding=0),
+            FullConnectLayer(in_features=144 * self.args.alpha, out_features=64 * self.args.alpha),
+            torch.nn.Linear(in_features=64 * self.args.alpha, out_features=self.args.num_classes)
         )
 
 
