@@ -27,7 +27,7 @@ def train(args):
     network = model.get_network().to(args.device)
 
     # model params
-    num_params = count_params(model)
+    num_params = count_params(network)
     print(f"> Total number of parameters {num_params}")
 
     criterion = BCEWithLogitsLoss()
