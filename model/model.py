@@ -131,16 +131,24 @@ class DConv(Model):
 class DLocal(Model):
     def build_network(self):
         self.network = torch.nn.Sequential(
-            LocalConnectLayer(in_channels=3, out_channels=1, kernel_size=3, stride=1, padding=0, bias=False),
-            LocalConnectLayer(in_channels=1, out_channels=2, kernel_size=3, stride=2, padding=0, bias=False),
-            LocalConnectLayer(in_channels=2, out_channels=2, kernel_size=3, stride=1, padding=0, bias=False),
-            LocalConnectLayer(in_channels=2, out_channels=4, kernel_size=3, stride=2, padding=0, bias=False),
-            LocalConnectLayer(in_channels=4, out_channels=4, kernel_size=3, stride=1, padding=0, bias=False),
-            LocalConnectLayer(in_channels=4, out_channels=8, kernel_size=3, stride=2, padding=0, bias=False),
-            LocalConnectLayer(in_channels=8, out_channels=8, kernel_size=3, stride=1, padding=0, bias=False),
-            LocalConnectLayer(in_channels=8, out_channels=16, kernel_size=3, stride=2, padding=0, bias=False),
-            FullConnectLayer(in_features=144, out_features=24),
-            torch.nn.Linear(24, self.args.num_classes)
+            LocalConnectLayer(in_channels=3, out_channels=1 * self.args.alpha, kernel_size=3, stride=1, padding=0,
+                              bias=False),
+            LocalConnectLayer(in_channels=1 * self.args.alpha, out_channels=2 * self.args.alpha, kernel_size=3,
+                              stride=2, padding=0, bias=False),
+            LocalConnectLayer(in_channels=2 * self.args.alpha, out_channels=2 * self.args.alpha, kernel_size=3,
+                              stride=1, padding=0, bias=False),
+            LocalConnectLayer(in_channels=2 * self.args.alpha, out_channels=4 * self.args.alpha, kernel_size=3,
+                              stride=2, padding=0, bias=False),
+            LocalConnectLayer(in_channels=4 * self.args.alpha, out_channels=4 * self.args.alpha, kernel_size=3,
+                              stride=1, padding=0, bias=False),
+            LocalConnectLayer(in_channels=4 * self.args.alpha, out_channels=8 * self.args.alpha, kernel_size=3,
+                              stride=2, padding=0, bias=False),
+            LocalConnectLayer(in_channels=8 * self.args.alpha, out_channels=8 * self.args.alpha, kernel_size=3,
+                              stride=1, padding=0, bias=False),
+            LocalConnectLayer(in_channels=8 * self.args.alpha, out_channels=16 * self.args.alpha, kernel_size=3,
+                              stride=2, padding=0, bias=False),
+            FullConnectLayer(in_features=144 * self.args.alpha, out_features=24 * self.args.alpha),
+            torch.nn.Linear(24 * self.args.alpha, self.args.num_classes)
         )
 
 

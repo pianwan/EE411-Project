@@ -63,7 +63,7 @@ class LocalConnect(nn.Module):
         # Sum in in_channel and kernel_size dims
         out = (x.unsqueeze(1) * self.weight).sum([2, -1])
         if self.bias is not None:
-            out += self.bias
+            out += torch.tensor(self.bias).to(x.device)
         return out
 
 
