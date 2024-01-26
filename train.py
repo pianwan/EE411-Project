@@ -70,9 +70,6 @@ def train(args):
             test_loss.append(te_loss)
             test_acc.append(te_acc)
             train_acc.append(tr_acc)
-            print(f"Train acc:{tr_acc}")
-            print(f"Test acc:{te_acc}")
-            print(f"Test loss:{te_loss}")
 
         # Save model
         if epoch % args.save_iter == 0 or epoch == args.epoch:
