@@ -1,8 +1,8 @@
 device = cuda
 save_path = ./checkpoints/sample
-model = sconv
-dataset = cifar-100
-num_classes = 100
+model = slocal
+dataset = cifar-10
+num_classes = 10
 seed = 0
 epoch = 400
 batch_size = 512

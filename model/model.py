@@ -98,8 +98,7 @@ class SConv(Model):
 class SLocal(Model):
     def build_network(self):
         self.network = torch.nn.Sequential(
-            LocalConnectLayer(in_channels=3, out_channels=1 * self.args.alpha, kernel_size=9, stride=2, padding=0,
-                              bias=False),
+            LocalConnectLayer(in_channels=3, out_channels=1 * self.args.alpha, input_img_size=32, kernel_size=9, stride=2, padding=0),
             FullConnectLayer(in_features=144 * self.args.alpha, out_features=24 * self.args.alpha),
             torch.nn.Linear(24 * self.args.alpha, self.args.num_classes)
         )
