@@ -1,11 +1,11 @@
 device = cuda
 save_path = ./checkpoints/sample
-model = resnet18
-dataset = cifar-10
-num_classes = 10
+model = sconv
+dataset = cifar-100
+num_classes = 100
 seed = 0
 epoch = 400
-batch_size = 64
+batch_size = 512
 
 optimizer = SGD
 lr = 0.1
@@ -19,4 +19,4 @@ weight_iter = 100
 save_iter = 100
 
 metrics_iter = 3
-alpha = 1
+alpha = 8

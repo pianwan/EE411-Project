@@ -165,3 +165,21 @@ class MLPDFC(Model):
             FullConnectLayer(128, 64),
             nn.Linear(64, self.args.num_classes)
         )
+
+
+class MLPSFC(Model):
+    def build_network(self):
+        self.network = nn.Sequential(
+            FullConnectLayer(3072, 1024),
+            FullConnectLayer(1024, 24 * self.args.alpha),
+            nn.Linear(24 * self.args.alpha, self.args.num_classes)
+        )
+
+
+class MLP3FC(Model):
+    def build_network(self):
+        self.network = nn.Sequential(
+            FullConnectLayer(3072, 1024),
+            FullConnectLayer(1024, 1024),
+            nn.Linear(1024, self.args.num_classes)
+        )
