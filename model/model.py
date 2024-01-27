@@ -71,18 +71,18 @@ class ResNet18(Model):
 class MLP3FC(Model):
     def build_network(self):
         self.network = nn.Sequential(
-            FullConnectLayer(3072, 256),
-            FullConnectLayer(256, 256),
-            nn.Linear(256, self.args.num_classes)
+            FullConnectLayer(3072, 256* self.args.alpha),
+            FullConnectLayer(256 * self.args.alpha, 256 * self.args.alpha),
+            nn.Linear(256 * self.args.alpha, self.args.num_classes)
         )
 
 
 class MLPSFC(Model):
     def build_network(self):
         self.network = nn.Sequential(
-            FullConnectLayer(3072, 768),
-            FullConnectLayer(768, 24),
-            nn.Linear(24, self.args.num_classes)
+            FullConnectLayer(3072, 768 * self.args.alpha),
+            FullConnectLayer(768 * self.args.alpha, 24 * self.args.alpha),
+            nn.Linear(24 * self.args.alpha, self.args.num_classes)
         )
 
 
@@ -167,19 +167,3 @@ class MLPDFC(Model):
         )
 
 
-class MLPSFC(Model):
-    def build_network(self):
-        self.network = nn.Sequential(
-            FullConnectLayer(3072, 1024),
-            FullConnectLayer(1024, 24 * self.args.alpha),
-            nn.Linear(24 * self.args.alpha, self.args.num_classes)
-        )
-
-
-class MLP3FC(Model):
-    def build_network(self):
-        self.network = nn.Sequential(
-            FullConnectLayer(3072, 1024),
-            FullConnectLayer(1024, 1024),
-            nn.Linear(1024, self.args.num_classes)
-        )
