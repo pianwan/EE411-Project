@@ -36,6 +36,7 @@ def train(args):
 
     train_acc, train_loss = [], []
     test_acc, test_loss = [], []
+    num_params1, num_params2, num_params3 = [], [], []
 
     # load weights
     start = 0
@@ -74,10 +75,21 @@ def train(args):
             test_loss.append(te_loss)
             test_acc.append(te_acc)
             train_acc.append(tr_acc)
+            print("test acc: " + str(te_acc))
+            print("train acc: " + str(tr_acc))
+            if '0.fc.0.weight' in model.get_network().state_dict().keys():
+                num_param1 = int((model.get_network().state_dict()['0.fc.0.weight'] != 0).sum())
+            else:
+                num_param1 = int((model.get_network().state_dict()['0.lc.0.weight'] != 0).sum())
+            num_param2 = int((model.get_network().state_dict()['1.fc.0.weight'] != 0).sum())
+            num_param3 = int((model.get_network().state_dict()['1.fc.1.weight'] != 0).sum())
+            num_params1.append(num_param1)
+            num_params2.append(num_param2)
+            num_params3.append(num_param3)
 
         # Save model
         if epoch % args.save_iter == 0 or epoch == args.epoch:
-            save_model(model, args.save_path, epoch, train_acc, train_loss, test_acc, test_loss)
+            save_model(model, args.save_path, epoch, train_acc, train_loss, test_acc, test_loss, num_params1, num_params2, num_params3)
             print(f"Saved checkpoints for epoch {epoch} at {args.save_path}")
 
 

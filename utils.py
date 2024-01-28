@@ -3,7 +3,7 @@ import os
 import torch
 
 
-def save_model(model, path, step, train_acc, train_loss, test_acc, test_loss):
+def save_model(model, path, step, train_acc, train_loss, test_acc, test_loss, num_params1, num_params2, num_params3):
     os.makedirs(path, exist_ok=True)
     path = os.path.join(path, '{:06d}.ckpt'.format(step))
     torch.save({
@@ -14,6 +14,9 @@ def save_model(model, path, step, train_acc, train_loss, test_acc, test_loss):
         'train_acc': train_acc,
         'test_loss': test_loss,
         'test_acc': test_acc,
+        'num_params1': num_params1,
+        'num_params2': num_params2,
+        'num_params3': num_params3,
     }, path)
 
 

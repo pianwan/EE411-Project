@@ -1,11 +1,11 @@
-device = cuda
-save_path = ./checkpoints/sample
-model = resnet18
+device = cpu
+save_path = ./checkpoints/slocal_cifir10_sgd
+model = slocal
 dataset = cifar-10
 num_classes = 10
 seed = 0
 epoch = 400
-batch_size = 64
+batch_size = 512
 
 optimizer = SGD
 lr = 0.1
@@ -16,7 +16,7 @@ beta_lambda = 1e-5
 
 load_weights = false
 weight_iter = 100
-save_iter = 100
+save_iter = 10
 
-metrics_iter = 3
-alpha = 1
+metrics_iter = 5
+alpha = 8
