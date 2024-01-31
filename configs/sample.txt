@@ -1,8 +1,8 @@
 device = cuda
 save_path = ./checkpoints/sample
-model = slocal
-dataset = cifar-10
-num_classes = 10
+model = mlp3fc
+dataset = cifar-100
+num_classes = 100
 seed = 0
 epoch = 400
 batch_size = 512
@@ -11,7 +11,7 @@ optimizer = SGD
 lr = 0.1
 momentum = 0.9
 weight_decay = 0
-beta = 50
+beta = 1
 beta_lambda = 1e-5
 
 load_weights = false
