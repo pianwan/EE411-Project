@@ -64,7 +64,7 @@ You can specify the config by using the parameter like `--alpha 100 --epoch 4000
 ## Contribution Details
 The basic structure of this project is implemented by Pian Wan including the python file of choosing datasets, basic components of networks and train and test fucntions. Yuheng Lu, Xinwei Li, Jiaxin Dong and Xinyi Han implemented the structure of every network for recreating the same experiment. To specify, Yuheng implemented the basic component structure of Local connect layer, SLocal network and Dlocal network. Xinwei and Jiaxin implemented the sconv network, dconv network and MLP (3-FC), MLP (S-FC) and MLP (D-FC) models. Xinyi implemented the optimizer of ${\beta\_LASSO}$ and reviewed all the structures and networks in our work. Then Xinwei implemented code of visualizations for this project (Figure 3, 5, 6, 7 and Table 1). Finally, Xinyi wrote most of this report while all others engaged in writing the parts of their own contribution. For a coarse contribution information to this repository, you can look into https://github.com/pianwan/EE411-Project/graphs/contributors
 
-## Acknowledgements
+## Acknowledgements and Reference
 
 We thank Neyshabur Behnam for his work _Towards learning convolutions from scratch_. For reference, you can cite his paper and this repository by:
 
@@ -89,4 +89,4 @@ We thank Neyshabur Behnam for his work _Towards learning convolutions from scrat
 ```
 
 ## Important Notes
-This version is not exactly the same as what the original paper do. This is only for EE411 submissions.
+This version is not exactly the same as what the original paper does. This is only for EE411 submissions.
